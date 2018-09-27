@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class GeneratePrimes {
     
     static boolean[] field;
+    static int amountOfPrimes;
 
     public static void main(String[] args) {
         int[] primnumbers = generatePrimesModulo(100);
@@ -78,6 +79,7 @@ public class GeneratePrimes {
                 result.add(i);
             }
         }
+        amountOfPrimes = result.size();
         return result;
     }
 
