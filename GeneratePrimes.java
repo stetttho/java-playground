@@ -3,9 +3,11 @@ package dummy;
 import java.util.ArrayList;
 
 public class GeneratePrimes {
+    
+    static boolean[] field;
 
     public static void main(String[] args) {
-        int[] primnumbers = generatePrimes(100);
+        int[] primnumbers = generatePrimesModulo(100);
         int i = 0;
         while(primnumbers[i] != 0) {
             System.out.println(primnumbers[i]);
@@ -21,7 +23,7 @@ public class GeneratePrimes {
 
     }
     
-    static int[] generatePrimes(int maxValue) {
+    static int[] generatePrimesModulo(int maxValue) {
         int[] result = new int[100];
         result[0]=2;
         result[1]=3;
@@ -39,30 +41,37 @@ public class GeneratePrimes {
                 i++;
             }
             number++;
-        }
-        
+        }       
         return result;
     }
-        
+       
     static ArrayList<Integer> generatePrimesSieve(int maxValue) {
-        // Initialisierung Boolean-Feld
-        boolean[] field = new boolean[maxValue];
+        generateBooleanField(maxValue);
+        crossOutMultiples(maxValue);
+        ArrayList<Integer> result = getUncrossedNumbers();
+        return result;
+    }
+    
+    private static void generateBooleanField(int maxValue) {
+        field = new boolean[maxValue+1];
         for(int i=0; i < field.length; i++) {
             field[i]=true;
         }
         field[0]=field[1]=false;
-        
-        // Limit bis zu dem geprüft werden muss
+    }
+    
+    private static void crossOutMultiples(int maxValue) {
         int limit = (int)Math.sqrt(maxValue);
-        
         for(int i=2; i<=limit; i++) {
             if(field[i]) {     
-                for(int j=(int)Math.pow(i, 2); j < maxValue; j=j+i) {
+                for(int j=(int)Math.pow(i, 2); j < field.length; j=j+i) {
                     field[j]=false;
                 }
             }
         }
-        
+    }
+    
+    private static ArrayList<Integer> getUncrossedNumbers() {
         ArrayList<Integer> result = new ArrayList<>();
         for(int i = 0; i < field.length; i++) {
             if(field[i]) {
